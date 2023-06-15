@@ -41,6 +41,27 @@ RSpec.describe ConnectFour do
       end
     end
 
+    context 'when user tries to play in a filled column' do
+      subject(:game_filled_column) { ConnectFour.new }
+
+      before do
+        7.times { |index| game_filled_column.grid[index][2] = 1 }
+        allow(game_filled_column).to receive(:gets).and_return('2', '1')
+        allow(game_invalid_input).to receive(:print).with(PROMPT_STRING)
+      end
+
+      it 'prompts for input again, once' do
+        expect(game_filled_column).to receive(:print).with(PROMPT_STRING).exactly(:twice)
+        expect(game_filled_column).to receive(:gets).exactly(:twice)
+
+        game_filled_column.player_input
+      end
+
+      it 'finally returns valid input as integer' do
+        expect(game_filled_column.player_input).to eql(1)
+      end
+    end
+
     context 'when user enters valid input' do
       subject(:game_valid_input) { ConnectFour.new }
 
