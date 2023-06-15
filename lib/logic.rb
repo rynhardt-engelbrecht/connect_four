@@ -8,9 +8,13 @@ module CFLogic
       print 'Enter column number to make your move>> '
       input = gets.chomp
     end
-    
+
     input.to_i
   end
 
-  def find_empty_slot; end
+  def find_empty_slot(column, row = 6)
+    find_empty_slot(column, row - 1) unless self.grid[row][column].zero? || row.zero?
+
+    row if grid[row][column] == 0
+  end
 end
