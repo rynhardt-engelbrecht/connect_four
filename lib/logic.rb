@@ -4,7 +4,7 @@ module CFLogic
   end
 
   def player_input(input = '')
-    until input.match(/^[0-6]$/) do
+    until input.match(/^[0-6]$/) && find_empty_slot(input.to_i) do
       print 'Enter column number to make your move>> '
       input = gets.chomp
     end
