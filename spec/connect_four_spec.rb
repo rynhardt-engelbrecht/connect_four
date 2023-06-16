@@ -47,7 +47,7 @@ RSpec.describe ConnectFour do
       before do
         7.times { |index| game_filled_column.grid[index][2] = 1 }
         allow(game_filled_column).to receive(:gets).and_return('2', '1')
-        allow(game_invalid_input).to receive(:print).with(PROMPT_STRING)
+        allow(game_filled_column).to receive(:print)
       end
 
       it 'prompts for input again, once' do
@@ -101,6 +101,65 @@ RSpec.describe ConnectFour do
 
       it 'returns nil' do
         expect(game_filled_column.find_empty_slot(0)).to eql(nil)
+      end
+    end
+  end
+
+  describe '#make_move' do
+    context 'when user inputs "4" for the column to play' do
+      subject(:game_column_four) { ConnectFour.new }
+
+      before do
+        allow(game_column_four).to receive(:gets).and_return('4')
+        allow(game_column_four).to receive(:print)
+      end
+
+      it 'updates lowest available row in given column' do
+        expect { game_column_four.make_move }.to change { game_column_four.grid[6][4] }.from(0)
+      end
+    end
+
+    context 'when lowest available row is "3" and column is "2"' do
+      subject(:game_row_three) { ConnectFour.new }
+
+      before do
+        game_row_three.grid = [
+          [0, 0, 0, 0, 0, 0, 1],
+          [0, 0, 0, 0, 0, 0, 2],
+          [0, 1, 0, 0, 1, 0, 2],
+          [0, 1, 0, 0, 2, 1, 1],
+          [0, 2, 1, 0, 1, 2, 1],
+          [1, 1, 2, 0, 1, 2, 1],
+          [2, 2, 1, 1, 2, 1, 2]
+        ]
+        allow(game_row_three).to receive(:gets).and_return('2')
+        allow(game_row_three).to receive(:print)
+      end
+
+      it 'updates value at grid[3][2]' do
+        expect { game_row_three.make_move }.to change { game_row_three.grid[3][2] }.from(0)
+      end
+    end
+
+    context 'when lowest available row is "0" and column is "0"' do
+      subject(:game_row_six) { ConnectFour.new }
+
+      before do
+        game_row_six.grid = [
+          [0, 0, 0, 0, 0, 0, 1],
+          [1, 0, 0, 0, 0, 0, 2],
+          [1, 1, 0, 0, 1, 0, 2],
+          [2, 1, 0, 0, 2, 1, 1],
+          [2, 2, 1, 0, 1, 2, 1],
+          [1, 1, 2, 0, 1, 2, 1],
+          [2, 2, 1, 1, 2, 1, 2]
+        ]
+        allow(game_row_six).to receive(:gets).and_return('0')
+        allow(game_row_six).to receive(:print)
+      end
+
+      it 'updates value at grid[0][0]' do
+        expect { game_row_six.make_move }.to change { game_row_six.grid[0][0] }.from(0)
       end
     end
   end
