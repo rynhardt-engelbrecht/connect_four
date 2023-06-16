@@ -1,6 +1,8 @@
 require_relative 'colors'
 
 class Player
+  attr_reader :number, :color
+
   include Colors
 
   def initialize

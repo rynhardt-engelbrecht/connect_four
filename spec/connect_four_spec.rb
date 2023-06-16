@@ -5,6 +5,8 @@ RSpec.describe ConnectFour do
   subject(:game) { ConnectFour.new }
 
   before do
+    allow_any_instance_of(ConnectFour).to receive(:print)
+    allow_any_instance_of(ConnectFour).to receive(:puts)
     allow_any_instance_of(Player).to receive(:gets).and_return('1', '2')
   end
 
@@ -15,7 +17,6 @@ RSpec.describe ConnectFour do
     context 'when user enters invalid input once, then valid input' do
       before do
         allow(game_invalid_input).to receive(:gets).and_return('7', '6')
-        allow(game_invalid_input).to receive(:print).with(PROMPT_STRING)
       end
 
       it 'prompts for input again, once' do
@@ -33,7 +34,6 @@ RSpec.describe ConnectFour do
     context 'when user enters invalid input twice, then valid input' do
       before do
         allow(game_invalid_input).to receive(:gets).and_return('7', '%', '6')
-        allow(game_invalid_input).to receive(:print).with(PROMPT_STRING)
       end
 
       it 'prompts for input again, twice' do
@@ -54,7 +54,6 @@ RSpec.describe ConnectFour do
       before do
         7.times { |index| game_filled_column.grid[index][2] = 1 }
         allow(game_filled_column).to receive(:gets).and_return('2', '1')
-        allow(game_filled_column).to receive(:print)
       end
 
       it 'prompts for input again, once' do
@@ -74,7 +73,6 @@ RSpec.describe ConnectFour do
 
       before do
         allow(game_valid_input).to receive(:gets).and_return('6')
-        allow(game_valid_input).to receive(:print).with(PROMPT_STRING)
       end
 
       it 'prompts for input only once' do
@@ -115,7 +113,6 @@ RSpec.describe ConnectFour do
   describe '#make_move' do
     before do
       allow(game).to receive(:gets).and_return('4')
-      allow(game).to receive(:print)
     end
 
     it 'swaps the current turn to the next player' do
@@ -128,7 +125,6 @@ RSpec.describe ConnectFour do
 
       before do
         allow(game_column_four).to receive(:gets).and_return('4')
-        allow(game_column_four).to receive(:print)
       end
 
       it 'updates the value at [6][4]' do
@@ -150,7 +146,6 @@ RSpec.describe ConnectFour do
           [2, 2, 1, 1, 2, 1, 2]
         ]
         allow(game_row_three).to receive(:gets).and_return('2')
-        allow(game_row_three).to receive(:print)
       end
 
       it 'updates value at grid[3][2]' do
@@ -184,6 +179,7 @@ RSpec.describe ConnectFour do
       subject(:game_win) { ConnectFour.new }
 
       context 'with a diagonal win' do
+        
         before do
           game_win.grid = [
             [0, 0, 0, 0, 0, 0, 1],
@@ -195,13 +191,11 @@ RSpec.describe ConnectFour do
             [2, 2, 1, 1, 2, 1, 2]
           ]
           allow(game_win).to receive(:gets).and_return('3')
-          allow(game_win).to receive(:print)
         end
-  
-        it 'outputs a congratulating string' do
-          winning_player = game_win.instance_variable_get(:@current_turn)
-          expect(game_win).to receive(:print).with("Congratulations! Player #{winning_player} won the game!")
-  
+
+        it '#diagonal_win? returns true' do
+          expect(game_win).to receive(:diagonal_win?).and_return(true)
+
           game_win.make_move
         end
   
@@ -211,8 +205,21 @@ RSpec.describe ConnectFour do
           game_win.make_move
         end
   
+        it 'outputs a congratulating string' do
+          winning_player = game_win.instance_variable_get(:@current_turn)
+          expect(game_win).to receive(:puts).with("Congratulations! Player #{winning_player.color} won the game!")
+  
+          game_win.make_move
+        end
+  
         it '@is_active gets set to false' do
           expect { game_win.make_move }.to change { game_win.instance_variable_get(:@is_active) }.to(false)
+        end
+
+        it '#swap_turn does not get called' do
+          expect(game_win).to_not receive(:swap_turn)
+
+          game_win.make_move
         end
       end
 
@@ -228,13 +235,11 @@ RSpec.describe ConnectFour do
             [2, 2, 1, 1, 2, 1, 2]
           ]
           allow(game_win).to receive(:gets).and_return('0')
-          allow(game_win).to receive(:print)
         end
 
-        it 'outputs a congratulating string' do
-          winning_player = game_win.instance_variable_get(:@current_turn)
-          expect(game_win).to receive(:print).with("Congratulations! Player #{winning_player} won the game!")
-  
+        it '#vertical_win? returns true' do
+          expect(game_win).to receive(:vertical_win?).and_return(true)
+
           game_win.make_move
         end
   
@@ -243,9 +248,22 @@ RSpec.describe ConnectFour do
   
           game_win.make_move
         end
+
+        it 'outputs a congratulating string' do
+          winning_player = game_win.instance_variable_get(:@current_turn)
+          expect(game_win).to receive(:puts).with("Congratulations! Player #{winning_player.color} won the game!")
+  
+          game_win.make_move
+        end
   
         it '@is_active gets set to false' do
           expect { game_win.make_move }.to change { game_win.instance_variable_get(:@is_active) }.to(false)
+        end
+
+        it '#swap_turn does not get called' do
+          expect(game_win).to_not receive(:swap_turn)
+
+          game_win.make_move
         end
       end
 
@@ -261,13 +279,11 @@ RSpec.describe ConnectFour do
             [1, 1, 1, 0, 2, 1, 2]
           ]
           allow(game_win).to receive(:gets).and_return('3')
-          allow(game_win).to receive(:print)
         end
 
-        it 'outputs a congratulating string' do
-          winning_player = game_win.instance_variable_get(:@current_turn)
-          expect(game_win).to receive(:print).with("Congratulations! Player #{winning_player} won the game!")
-  
+        it '#horizontal_win? returns true' do
+          expect(game_win).to receive(:horizontal_win?).and_return(true)
+
           game_win.make_move
         end
   
@@ -276,9 +292,22 @@ RSpec.describe ConnectFour do
   
           game_win.make_move
         end
+
+        it 'outputs a congratulating string' do
+          winning_player = game_win.instance_variable_get(:@current_turn)
+          expect(game_win).to receive(:puts).with("Congratulations! Player #{winning_player.color} won the game!")
+  
+          game_win.make_move
+        end
   
         it '@is_active gets set to false' do
           expect { game_win.make_move }.to change { game_win.instance_variable_get(:@is_active) }.to(false)
+        end
+
+        it '#swap_turn does not get called' do
+          expect(game_win).to_not receive(:swap_turn)
+
+          game_win.make_move
         end
       end
     end
