@@ -1,6 +1,13 @@
 require './lib/connect_four.rb'
+require './lib/player.rb'
 
 RSpec.describe ConnectFour do
+  subject(:game) { ConnectFour.new }
+
+  before do
+    allow_any_instance_of(Player).to receive(:gets).and_return('2', '4')
+  end
+
   describe '#player_input' do
     subject(:game_invalid_input) { ConnectFour.new }
     PROMPT_STRING = 'Enter column number to make your move>> '
@@ -106,6 +113,16 @@ RSpec.describe ConnectFour do
   end
 
   describe '#make_move' do
+    before do
+      allow(game).to receive(:gets).and_return('4')
+      allow(game).to receive(:print)
+    end
+
+    it 'swaps the current turn to the next player' do
+      next_turn = game.instance_variable_get(:@next_turn)
+      expect { game.make_move }.to change { game.instance_variable_get(:@current_turn) }.to(next_turn)
+    end
+
     context 'when user inputs "4" for the column to play' do
       subject(:game_column_four) { ConnectFour.new }
 
@@ -114,7 +131,7 @@ RSpec.describe ConnectFour do
         allow(game_column_four).to receive(:print)
       end
 
-      it 'updates lowest available row in given column' do
+      it 'updates the value at [6][4]' do
         expect { game_column_four.make_move }.to change { game_column_four.grid[6][4] }.from(0)
       end
     end
