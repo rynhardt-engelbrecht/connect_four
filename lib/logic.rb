@@ -2,6 +2,7 @@ module CFLogic
   def make_move(column = player_input)
     row_to_update = find_empty_slot(column)
     self.grid[row_to_update][column] = 1
+    swap_turn
   end
 
   def player_input(input = '')
@@ -19,4 +20,9 @@ module CFLogic
     find_empty_slot(column, row - 1) unless row.zero?
   end
   
+  def swap_turn
+    temp = @current_turn
+    @current_turn = @next_turn
+    @next_turn = temp
+  end
 end
