@@ -5,7 +5,7 @@ RSpec.describe ConnectFour do
   subject(:game) { ConnectFour.new }
 
   before do
-    allow_any_instance_of(Player).to receive(:gets).and_return('2', '4')
+    allow_any_instance_of(Player).to receive(:gets).and_return('1', '2')
   end
 
   describe '#player_input' do
@@ -177,6 +177,109 @@ RSpec.describe ConnectFour do
 
       it 'updates value at grid[0][0]' do
         expect { game_row_six.make_move }.to change { game_row_six.grid[0][0] }.from(0)
+      end
+    end
+
+    context 'when a player makes a winning move' do
+      subject(:game_win) { ConnectFour.new }
+
+      context 'with a diagonal win' do
+        before do
+          game_win.grid = [
+            [0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 2],
+            [1, 1, 0, 0, 1, 0, 2],
+            [2, 1, 0, 0, 2, 1, 1],
+            [2, 2, 1, 0, 1, 2, 1],
+            [1, 1, 2, 0, 1, 2, 1],
+            [2, 2, 1, 1, 2, 1, 2]
+          ]
+          allow(game_win).to receive(:gets).and_return('3')
+          allow(game_win).to receive(:print)
+        end
+  
+        it 'outputs a congratulating string' do
+          winning_player = game_win.instance_variable_get(:@current_turn)
+          expect(game_win).to receive(:print).with("Congratulations! Player #{winning_player} won the game!")
+  
+          game_win.make_move
+        end
+  
+        it '#win? returns true' do
+          expect(game_win).to receive(:win?).and_return(true)
+  
+          game_win.make_move
+        end
+  
+        it '@is_active gets set to false' do
+          expect { game_win.make_move }.to change { game_win.instance_variable_get(:@is_active) }.to(false)
+        end
+      end
+
+      context 'with a vertical win' do
+        before do
+          game_win.grid = [
+            [0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 2],
+            [1, 1, 0, 0, 1, 0, 2],
+            [1, 1, 0, 0, 2, 1, 1],
+            [2, 2, 2, 0, 1, 2, 1],
+            [1, 1, 2, 0, 1, 2, 1],
+            [2, 2, 1, 1, 2, 1, 2]
+          ]
+          allow(game_win).to receive(:gets).and_return('0')
+          allow(game_win).to receive(:print)
+        end
+
+        it 'outputs a congratulating string' do
+          winning_player = game_win.instance_variable_get(:@current_turn)
+          expect(game_win).to receive(:print).with("Congratulations! Player #{winning_player} won the game!")
+  
+          game_win.make_move
+        end
+  
+        it '#win? returns true' do
+          expect(game_win).to receive(:win?).and_return(true)
+  
+          game_win.make_move
+        end
+  
+        it '@is_active gets set to false' do
+          expect { game_win.make_move }.to change { game_win.instance_variable_get(:@is_active) }.to(false)
+        end
+      end
+
+      context 'with a horizontal win' do
+        before do
+          game_win.grid = [
+            [0, 0, 0, 0, 0, 0, 1],
+            [2, 0, 0, 0, 0, 0, 2],
+            [1, 1, 0, 0, 1, 0, 2],
+            [1, 1, 0, 0, 2, 1, 1],
+            [2, 2, 2, 0, 1, 2, 1],
+            [1, 1, 2, 0, 1, 2, 1],
+            [1, 1, 1, 0, 2, 1, 2]
+          ]
+          allow(game_win).to receive(:gets).and_return('3')
+          allow(game_win).to receive(:print)
+        end
+
+        it 'outputs a congratulating string' do
+          winning_player = game_win.instance_variable_get(:@current_turn)
+          expect(game_win).to receive(:print).with("Congratulations! Player #{winning_player} won the game!")
+  
+          game_win.make_move
+        end
+  
+        it '#win? returns true' do
+          expect(game_win).to receive(:win?).and_return(true)
+  
+          game_win.make_move
+        end
+  
+        it '@is_active gets set to false' do
+          expect { game_win.make_move }.to change { game_win.instance_variable_get(:@is_active) }.to(false)
+        end
       end
     end
   end

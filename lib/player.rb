@@ -4,7 +4,8 @@ class Player
   include Colors
 
   def initialize
-    @color = token_color(select_color)
+    @number = select_color.to_i
+    @color = token_color(@number)
   end
 
   private
