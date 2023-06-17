@@ -2,6 +2,10 @@
 
 # module containing main functionality of the game.
 module CFLogic
+  def play_game
+    make_move while @is_active
+  end
+
   def make_move(column = player_input)
     row_to_update = find_empty_slot(column)
     grid[row_to_update][column] = @current_turn.number
