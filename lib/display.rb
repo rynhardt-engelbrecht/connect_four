@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+require_relative 'colors'
+
 # module to handle output
 module Display
+  include Colors
+
   def error_message(message)
     {
       'input' => colorize('Invalid input, please only enter 1 number between 0 and 6.', 'red'),
@@ -19,6 +23,17 @@ module Display
     }[message]
   end
 
-  def pretty_print; end
+  def pretty_print
+    puts '0   1   2   3   4   5   6'
+    puts '_________________________'
+
+    @grid.each do |row|
+      row_output = row.map { |value| token_color(value) }
+      puts row_output.join('| ')
+    end
+
+    puts '-------------------------'
+  end
+
   def turn_message(message); end
 end
