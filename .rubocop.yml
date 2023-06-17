@@ -1,0 +1,7 @@
+AllCops:
+  Include:
+    - 'lib/colors.rb'
+    - 'lib/connect_four.rb'
+    - 'lib/logic.rb'
+    - 'lib/main.rb'
+    - 'lib/player.rb'
