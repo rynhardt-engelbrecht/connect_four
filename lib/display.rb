@@ -9,8 +9,16 @@ module Display
       'color' => colorize('Please only enter a number between 1 and 6 to choose your color.', 'red')
     }[message]
   end
-  
-  def game_message(message); end
+
+  def game_message(message)
+    {
+      'win' => colorize("Player #{@current_turn.color} wins the game!", 'green'),
+      'draw' => colorize('The game ended in a draw', 'yellow'),
+      'play again' => 'Would you like to play again? (y/n)>>',
+      'thanks' => "Thank you so much for playing my version of #{colorize('Connect Four', 'blue')}! Check out my Github at https://github.com/rynhardt-engelbrecht."
+    }[message]
+  end
+
   def pretty_print; end
   def turn_message(message); end
 end
