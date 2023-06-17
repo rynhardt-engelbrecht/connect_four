@@ -2,12 +2,14 @@
 
 require_relative 'logic'
 require_relative 'player'
+require_relative 'display'
 
 # class representing a Connect Four game
 class ConnectFour
   attr_accessor :grid, :current_turn, :next_turn
 
   include CFLogic
+  include Display
 
   def initialize
     @grid = Array.new(7) { Array.new(7, 0) }
