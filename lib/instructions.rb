@@ -9,7 +9,7 @@ module Instructions
     Welcome to my version of Connect Four!
 
 
-    
+
     How the game works:
      - When the game starts, both players will have to pick a color, from:
         1: #{token_color(1)} | 2: #{token_color(2)} | 3: #{token_color(3)} | 4: #{token_color(4)} | 5: #{token_color(5)} | 6: #{token_color(6)}
@@ -31,6 +31,8 @@ module Instructions
 
 
     Best of luck to you, and enjoy the game!
+
+    
     HEREDOC
   end
 end

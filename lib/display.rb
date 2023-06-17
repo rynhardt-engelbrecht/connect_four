@@ -46,7 +46,7 @@ module Display
 
   def turn_message(message)
     {
-      'move' => "Player #{@current_turn.color}, Enter column number to make your move>> "
+      'move' => "Player #{@current_turn.color} enter column number to make your move>> "
     }[message]
   end
 

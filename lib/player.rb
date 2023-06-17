@@ -18,10 +18,12 @@ class Player
   private
 
   def select_color(input = '')
-    until input.match(/^[1-6]$/)
+    until input.match(/^[1-6]$/) || %w[q quit].include?(input)
       input = gets.chomp
 
-      unless input.match(/^[1-6]$/)
+      if %w[q quit].include?(input)
+        exit
+      elsif !input.match(/^[1-6]$/)
         puts error_message('color')
         print '>> '
       end
