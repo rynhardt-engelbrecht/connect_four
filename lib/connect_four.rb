@@ -13,9 +13,22 @@ class ConnectFour
 
   def initialize
     @grid = Array.new(7) { Array.new(7, 0) }
-    @players = { player_one: Player.new, player_two: Player.new }
+    pretty_print
+    create_players
+    self.count_down
     @current_turn = @players[:player_one]
     @next_turn = @players[:player_two]
     @is_active = true
+  end
+
+  def create_players
+    @players = Hash.new
+    puts pick_color('one')
+    @players[:player_one] = Player.new
+    puts "Player one, your color is: #{@players[:player_one].color}"
+    puts ''
+    puts pick_color('two')
+    @players[:player_two] = Player.new
+    puts "Player two, your color is: #{@players[:player_two].color}"
   end
 end
