@@ -12,4 +12,13 @@ module Colors
       6 => "\e[96m\u25CF \e[0m"
     }[number]
   end
+
+  def colorize(text, color)
+    {
+      'red' => "\e[91m#{text}\e[0m",
+      'green' => "\e[92m#{text}\e[0m",
+      'yellow' => "\e[93m#{text}\e[0m",
+      'blue' => "\e[94m#{text}\e[0m"
+    }[color]
+  end
 end
