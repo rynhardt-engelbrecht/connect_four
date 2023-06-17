@@ -3,6 +3,7 @@
 require_relative 'logic'
 require_relative 'player'
 require_relative 'display'
+require_relative 'instructions'
 
 # class representing a Connect Four game
 class ConnectFour
@@ -10,10 +11,10 @@ class ConnectFour
 
   include CFLogic
   include Display
+  include Instructions
 
   def initialize
     @grid = Array.new(7) { Array.new(7, 0) }
-    pretty_print
     create_players
     self.count_down
     @current_turn = @players[:player_one]
@@ -22,6 +23,7 @@ class ConnectFour
   end
 
   def create_players
+    puts instructions
     @players = Hash.new
     puts pick_color('one')
     @players[:player_one] = Player.new
