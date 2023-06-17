@@ -35,5 +35,11 @@ module Display
     puts '-------------------------'
   end
 
-  def turn_message(message); end
+  def turn_message(message)
+    {
+      'move' => 'Enter column number to make your move>>',
+      'one choose color' => 'Player 1, choose a color. (Enter a number between 1 and 6)>>',
+      'two choose color' => 'Player 1, choose a color. (Enter a number between 1 and 6)>>'
+    }[message]
+  end
 end
