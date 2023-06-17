@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require_relative 'colors'
 
+# class to handle all player actions
 class Player
   attr_reader :number, :color
 

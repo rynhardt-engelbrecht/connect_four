@@ -1,5 +1,7 @@
-require './lib/connect_four.rb'
-require './lib/player.rb'
+# frozen_string_literal: true
+
+require './lib/connect_four'
+require './lib/player'
 
 RSpec.describe ConnectFour do
   subject(:game) { ConnectFour.new }
@@ -101,7 +103,7 @@ RSpec.describe ConnectFour do
       subject(:game_filled_column) { ConnectFour.new }
 
       before do
-        7.times { |index| game_filled_column.grid[index][0] = 1}
+        7.times { |index| game_filled_column.grid[index][0] = 1 }
       end
 
       it 'returns nil' do
@@ -179,7 +181,6 @@ RSpec.describe ConnectFour do
       subject(:game_win) { ConnectFour.new }
 
       context 'with a diagonal win' do
-        
         before do
           game_win.grid = [
             [0, 0, 0, 0, 0, 0, 1],
@@ -198,20 +199,20 @@ RSpec.describe ConnectFour do
 
           game_win.make_move
         end
-  
+
         it '#win? returns true' do
           expect(game_win).to receive(:win?).and_return(true)
-  
+
           game_win.make_move
         end
-  
+
         it 'outputs a congratulating string' do
           winning_player = game_win.instance_variable_get(:@current_turn)
           expect(game_win).to receive(:puts).with("Congratulations! Player #{winning_player.color} won the game!")
-  
+
           game_win.make_move
         end
-  
+
         it '@is_active gets set to false' do
           expect { game_win.make_move }.to change { game_win.instance_variable_get(:@is_active) }.to(false)
         end
@@ -242,20 +243,20 @@ RSpec.describe ConnectFour do
 
           game_win.make_move
         end
-  
+
         it '#win? returns true' do
           expect(game_win).to receive(:win?).and_return(true)
-  
+
           game_win.make_move
         end
 
         it 'outputs a congratulating string' do
           winning_player = game_win.instance_variable_get(:@current_turn)
           expect(game_win).to receive(:puts).with("Congratulations! Player #{winning_player.color} won the game!")
-  
+
           game_win.make_move
         end
-  
+
         it '@is_active gets set to false' do
           expect { game_win.make_move }.to change { game_win.instance_variable_get(:@is_active) }.to(false)
         end
@@ -286,20 +287,20 @@ RSpec.describe ConnectFour do
 
           game_win.make_move
         end
-  
+
         it '#win? returns true' do
           expect(game_win).to receive(:win?).and_return(true)
-  
+
           game_win.make_move
         end
 
         it 'outputs a congratulating string' do
           winning_player = game_win.instance_variable_get(:@current_turn)
           expect(game_win).to receive(:puts).with("Congratulations! Player #{winning_player.color} won the game!")
-  
+
           game_win.make_move
         end
-  
+
         it '@is_active gets set to false' do
           expect { game_win.make_move }.to change { game_win.instance_variable_get(:@is_active) }.to(false)
         end
