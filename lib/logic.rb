@@ -1,8 +1,14 @@
 # frozen_string_literal: true
 
+require_relative 'display'
+
 # module containing main functionality of the game.
 module CFLogic
+  include Display
+
   def play_game
+    pretty_print
+
     make_move while @is_active
   end
 
@@ -10,21 +16,31 @@ module CFLogic
     row_to_update = find_empty_slot(column)
     grid[row_to_update][column] = @current_turn.number
 
+    pretty_print
+
     if win?(row_to_update, column, @current_turn)
       @is_active = false
-      puts "Congratulations! Player #{@current_turn.color} won the game!"
+      puts game_message('win')
     else
       swap_turn
     end
   end
 
   def player_input(input = '')
-    until input.match(/^[0-6]$/) && find_empty_slot(input.to_i)
-      print 'Enter column number to make your move>> '
+    until input.match(/^[1-7]$/) && find_empty_slot(input.to_i - 1) || %w[q quit].include?(input)
+      print turn_message('move')
       input = gets.chomp
+
+      if %w[q quit].include?(input)
+        exit
+      elsif (input.to_i - 1) > 6 || (input.to_i - 1) < 0
+        puts error_message('input')
+      elsif !find_empty_slot(input.to_i - 1)
+        puts error_message('filled')
+      end
     end
 
-    input.to_i
+    input.to_i - 1
   end
 
   def find_empty_slot(column, row = 6)
