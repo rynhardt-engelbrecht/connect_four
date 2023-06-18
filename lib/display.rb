@@ -9,9 +9,10 @@ module Display
 
   def error_message(message)
     {
-      'input' => colorize('Invalid input, please only enter 1 number between 1 and 7.', 'red'),
-      'filled' => colorize('Cannot play here, column is already filled.', 'red'),
-      'color' => colorize('Please only enter a number between 1 and 6 to choose your color.', 'red')
+      'input' => colorize('Error: Invalid input, please only enter 1 number between 1 and 7.', 'red'),
+      'filled' => colorize('Error: Cannot play here, column is already filled.', 'red'),
+      'color' => colorize('Error: Please only enter a number between 1 and 6 to choose your color.', 'red'),
+      'yes no' => colorize('Error: Please only type and enter "y", "yes", "n", or "no".', 'red')
     }[message]
   end
 
@@ -20,14 +21,8 @@ module Display
       'win' => colorize("Player #{@current_turn.color}\e[92m wins the game!", 'green'),
       'draw' => colorize('The game ended in a draw', 'yellow'),
       'play again' => 'Would you like to play again? (y/n)>> ',
+      'start' => 'Start the game? (y/n)>> '
     }[message]
-  end
-
-  def pick_color(player)
-    {
-      'one' => 'Player one, choose a color. (Enter a number between 1 and 6)>> ',
-      'two' => 'Player two, choose a color. (Enter a number between 1 and 6)>> '
-    }[player]
   end
 
   def pretty_print
