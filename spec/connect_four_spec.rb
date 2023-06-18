@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# These tests no longer work, I will have to rewrite them to fit the new spec
+# of the program
+
 require './lib/connect_four'
 require './lib/player'
 
@@ -10,6 +13,8 @@ RSpec.describe ConnectFour do
     allow_any_instance_of(ConnectFour).to receive(:print)
     allow_any_instance_of(ConnectFour).to receive(:puts)
     allow_any_instance_of(Player).to receive(:gets).and_return('1', '2')
+    allow_any_instance_of(Player).to receive(:print)
+    allow_any_instance_of(Player).to receive(:puts)
   end
 
   describe '#player_input' do
