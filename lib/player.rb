@@ -18,17 +18,24 @@ class Player
   private
 
   def select_color(input = '')
+    puts 'Choose your color. (Enter a number between 1 and 6)>> '
+
     until input.match(/^[1-6]$/) || %w[q quit].include?(input)
       input = gets.chomp
 
-      if %w[q quit].include?(input)
-        exit
-      elsif !input.match(/^[1-6]$/)
-        puts error_message('color')
-        print '>> '
-      end
+      validate_color(input)
     end
 
+    puts "Your color is #{token_color(input.to_i)}"
     input
+  end
+
+  def validate_color(number)
+    if %w[q quit].include?(number)
+      exit
+    elsif !number.match(/^[1-6]$/)
+      puts error_message('color')
+      print '>> '
+    end
   end
 end

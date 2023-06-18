@@ -1,15 +1,40 @@
 # frozen_string_literal: true
 
 require_relative 'display'
+require_relative 'player'
+
+# rubocop:disable Metrics/ModuleLength
 
 # module containing main functionality of the game.
 module CFLogic
   include Display
 
   def play_game
+    return unless start_game?
+
     pretty_print
 
     make_move while @is_active
+  end
+
+  def start_game?(input = '')
+    puts game_message('start')
+    until %w[y yes n no].include?(input.downcase) || %w[q quit].include?(input.downcase)
+      input = gets.chomp
+
+      validate_start(input)
+    end
+
+    input.downcase == 'y' || 'yes'
+  end
+
+  def validate_start(input)
+    if %w[q quit].include?(input.downcase)
+      exit
+    elsif !%w[y yes n no].include?(input.downcase)
+      puts error_message('yes no')
+      print '>> '
+    end
   end
 
   def make_move(column = player_input)
@@ -27,20 +52,24 @@ module CFLogic
   end
 
   def player_input(input = '')
-    until input.match(/^[1-7]$/) && find_empty_slot(input.to_i - 1) || %w[q quit].include?(input)
+    until input.match(/^[1-7]$/) && find_empty_slot(input.to_i - 1) || %w[q quit].include?(input.downcase)
       print turn_message('move')
       input = gets.chomp
 
-      if %w[q quit].include?(input)
-        exit
-      elsif (input.to_i - 1) > 6 || (input.to_i - 1) < 0
-        puts error_message('input')
-      elsif !find_empty_slot(input.to_i - 1)
-        puts error_message('filled')
-      end
+      validate_input(input)
     end
 
     input.to_i - 1
+  end
+
+  def validate_input(input)
+    if %w[q quit].include?(input)
+      exit
+    elsif (input.to_i - 1) > 6 || (input.to_i - 1).negative?
+      puts error_message('input')
+    elsif !find_empty_slot(input.to_i - 1)
+      puts error_message('filled')
+    end
   end
 
   def find_empty_slot(column, row = 6)
@@ -146,3 +175,5 @@ module CFLogic
     arr
   end
 end
+
+# rubocop:enable Metrics/ModuleLength
