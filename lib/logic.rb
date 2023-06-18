@@ -46,6 +46,9 @@ module CFLogic
     if win?(row_to_update, column, @current_turn)
       @is_active = false
       puts game_message('win')
+    elsif draw?
+      @is_active = false
+      puts game_message('draw')
     else
       swap_turn
     end
@@ -88,6 +91,12 @@ module CFLogic
     horizontal_win?(current_row, player) ||
       vertical_win?(current_col, player) ||
       diagonal_win?(current_row, current_col, player)
+  end
+
+  def draw?
+    @grid.all? do |row|
+      row.all? { |row| row != 0 }
+    end
   end
 
   def horizontal_win?(current_row, player)
