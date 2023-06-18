@@ -32,6 +32,7 @@ class Player
 
   def validate_color(number)
     if %w[q quit].include?(number)
+      puts game_message('thanks')
       exit
     elsif !number.match(/^[1-6]$/)
       puts error_message('color')

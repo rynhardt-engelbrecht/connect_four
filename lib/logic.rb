@@ -67,6 +67,7 @@ module CFLogic
 
   def validate_input(input)
     if %w[q quit].include?(input)
+      puts game_message('thanks')
       exit
     elsif (input.to_i - 1) > 6 || (input.to_i - 1).negative?
       puts error_message('input')

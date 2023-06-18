@@ -21,7 +21,8 @@ module Display
       'win' => colorize("Player #{@current_turn.color}\e[92m wins the game!", 'green'),
       'draw' => colorize('The game ended in a draw', 'yellow'),
       'play again' => 'Would you like to play again? (y/n)>> ',
-      'start' => 'Start the game? (y/n)>> '
+      'start' => 'Start the game? (y/n)>> ',
+      'thanks' => "Thank you for playing my version of #{colorize('Connect Four', 'blue')}! You can find more projects on my Github at https://github.com/rynhardt-engelbrecht"
     }[message]
   end
 
